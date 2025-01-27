@@ -8,6 +8,7 @@ function Bird:new()
         y = 300, -- starting Y coordinate
         width = 40, -- Width of the bird for collision 
         height = 25, -- Height of the bird for collision 
+        -- dx = 0.6, -- horiontal speed 
         dy = 0, -- vertical speed 
         gravity = 9.8, -- gravity that pulls the bird down 
         jumpSpeed = -5-- jump speed 
