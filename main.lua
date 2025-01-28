@@ -8,18 +8,23 @@ local pipePairs = {}  -- List to store pipe pairs
 function love.load()
     bird = Bird:new()
 
-   -- bottom pipe height 
-   local bottomPipeHeight = math.random(150, 200) -- change and see what works  
+   local initialX = love.graphics.getWidth() + 100 -- Starting X position 
+   local horizontalGap = 350 -- Change the gap as needed 
+
+   for i=1,3 do
+    -- bottom pipe height 
+        local bottomPipeHeight = math.random(200, 230)
    -- Fixed bottom pipe Y-coordinate
-   local bottomPipeY = love.graphics.getHeight() - bottomPipeHeight-- This ensures the bottom pipe's bottom edge is at the bottom of the screen
+        local bottomPipeY = love.graphics.getHeight() - bottomPipeHeight-- This ensures the bottom pipe's bottom edge is at the bottom of the screen
     -- Randomly generate a gap value (the space between the pipes)
-    local gap = math.random(50, 100)  -- Gap between top and bottom pipes (randomized)
+        local gap = math.random(140, 180)  -- Gap between top and bottom pipes (randomized)
 
     -- Create the bottom pipe with the fixed y-coordinate
-    local bottomPipe = Pipe:new(love.graphics.getWidth(), bottomPipeY, 60, bottomPipeHeight)
+        local bottomPipe = Pipe:new(initialX + (i - 1) * horizontalGap, bottomPipeY, 60, bottomPipeHeight)
 
     -- Initialize first pair of pipes
-    table.insert(pipePairs, PipePair:new(bottomPipe, 150))  -- Add first pipe pair
+        table.insert(pipePairs, PipePair:new(bottomPipe, gap))  -- Add first pipe pair
+   end 
 end
 
 function love.update(dt)
@@ -39,10 +44,31 @@ function love.update(dt)
     end
 
     -- Add new pipes if needed (e.g., when the last pipe pair moves off screen)
-    if pipePairs[#pipePairs].top:isOffScreen() then
-        -- Create a new pipe pair when the last one goes off-screen
-        table.insert(pipePairs, PipePair:new(Pipe:new(love.graphics.getWidth(), math.random(100, love.graphics.getHeight() - 200), 60, 300), 150))
+    -- Add new pipes if needed (e.g., when the last pipe pair moves off screen)
+    while #pipePairs < 5 do  -- Ensure there are always at least 5 pipe pairs
+        -- Calculate the x position for the new pipe pair based on the last pipe pair
+        local lastPipePairX = pipePairs[#pipePairs].bottom.x
+        local horizontalGap = 250  -- Same horizontal gap as in love.load()
+
+        -- Bottom pipe height
+        local bottomPipeHeight = math.random(200, 230)
+        local bottomPipeY = love.graphics.getHeight() - bottomPipeHeight
+
+        -- Random gap between top and bottom pipes
+        local gap = math.random(100, 120)
+
+    -- Create a new bottom pipe
+        local newBottomPipe = Pipe:new(lastPipePairX + horizontalGap, bottomPipeY, 60, bottomPipeHeight)
+
+    -- Add a new pipe pair to the list
+        table.insert(pipePairs, PipePair:new(newBottomPipe, gap))
     end
+
+-- Remove the first pipe pair from the list if it moves off-screen
+    if pipePairs[1].top:isOffScreen() then
+        table.remove(pipePairs, 1)
+    end
+
 end
 
 function love.draw()
