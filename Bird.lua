@@ -5,13 +5,14 @@ Bird = {}
 function Bird:new() 
     local obj = {
         x = 50, -- starting X coordinate 
-        y = 300, -- starting Y coordinate
+        y = 450, -- starting Y coordinate
         width = 40, -- Width of the bird for collision 
         height = 25, -- Height of the bird for collision 
-        -- dx = 0.6, -- horiontal speed 
         dy = 0, -- vertical speed 
         gravity = 9.8, -- gravity that pulls the bird down 
-        jumpSpeed = -5-- jump speed 
+        jumpSpeed = -5, -- jump speed 
+        isGravity = false,  -- by default gravity should not be activated=
+        image = love.graphics.newImage("assets/flappy_bird_icon.jpeg") -- the path to the image 
     }
 
     setmetatable(obj, self)
@@ -21,9 +22,15 @@ end
 
 function Bird:update(dt)
     -- Apply the gravity to vertical speed over time 
-    self.dy = self.dy+self.gravity*dt
+    if self.isGravity then
+        self.dy = self.dy+self.gravity*dt
+    end 
     -- Update bird's Y coordinate based on vertical speed 
     self.y = self.y + self.dy
+end 
+
+function Bird:activateGravity()
+    self.isGravity = true
 end 
 
 function Bird:jump()
@@ -32,7 +39,7 @@ function Bird:jump()
 end 
 
 function Bird:render()
-    -- render the bird as a rectangle, TODO: change it later to an image to make it visually appealing 
-    love.graphics.rectangle("fill", self.x, self.y, self.width, self.height)
+    -- render the bird with image 
+    love.graphics.draw(self.image, self.x, self.y)
 end 
 

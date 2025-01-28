@@ -4,6 +4,8 @@ require "PipePair"
 
 local bird
 local pipePairs = {}  -- List to store pipe pairs
+local backgroundMusic = love.audio.newSource("assets/background_music.mp3", "stream")
+local background
 
 function love.load()
     bird = Bird:new()
@@ -25,6 +27,10 @@ function love.load()
     -- Initialize first pair of pipes
         table.insert(pipePairs, PipePair:new(bottomPipe, gap))  -- Add first pipe pair
    end 
+
+   -- Adding the background music 
+--    backgroundMusic:setLooping(true)
+--    backgroundMusic:play() 
 end
 
 function love.update(dt)
@@ -38,7 +44,8 @@ function love.update(dt)
     -- Check for collisions with each pipe pair
     for _, pipePair in ipairs(pipePairs) do
         if pipePair:checkCollision(bird) then
-            print("Collision Detected!")
+            -- TODO: Fix this one 
+            print("Collision Detected, fuck you")
             -- Handle collision (e.g., game over or restart)
         end
     end
@@ -71,7 +78,21 @@ function love.update(dt)
 
 end
 
+function love.keypressed(key)
+    -- make the jump when the key is "space" key is pressed 
+    if key == "space" then
+        bird:jump() -- make the damn bird jump 
+        bird:activateGravity() -- activate the gravity 
+    end 
+end 
+
 function love.draw()
+    -- changing the background 
+    local screenWidth, screenHeight = love.graphics.getDimensions()
+
+    background = love.graphics.newImage("assets/flappy_bird_bg.jpg")
+    love.graphics.draw(background, 0, 0, 0, screenWidth/background:getWidth(), screenHeight/background:getHeight()) 
+
     -- Render the bird
     bird:render()
 
