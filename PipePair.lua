@@ -34,8 +34,8 @@ function PipePair:update(dt)
 end 
 
 function PipePair:render()
-    self.bottom:render()
-    self.top:render()
+    self.bottom:render(false)
+    self.top:render(true)
 end 
 
 function PipePair:checkCollision(bird)

@@ -1,18 +1,18 @@
 -- Bird.lua
 
 Bird = {}
-
+local scaleFactor = 3
 function Bird:new() 
     local obj = {
         x = 50, -- starting X coordinate 
-        y = 450, -- starting Y coordinate
+        y = 300, -- starting Y coordinate
         width = 40, -- Width of the bird for collision 
         height = 25, -- Height of the bird for collision 
         dy = 0, -- vertical speed 
         gravity = 9.8, -- gravity that pulls the bird down 
-        jumpSpeed = -5, -- jump speed 
+        jumpSpeed = -3.75, -- jump speed 
         isGravity = false,  -- by default gravity should not be activated=
-        image = love.graphics.newImage("assets/flappy_bird_icon.jpeg") -- the path to the image 
+        image = love.graphics.newImage("assets/flappy_bird_icon.png") -- the path to the image 
     }
 
     setmetatable(obj, self)
@@ -40,6 +40,7 @@ end
 
 function Bird:render()
     -- render the bird with image 
-    love.graphics.draw(self.image, self.x, self.y)
+    love.graphics.draw(self.image, self.x, self.y, 0, scaleFactor*self.width/self.image:getWidth(), scaleFactor*self.height/self.image:getHeight())
 end 
+
 
