@@ -5,7 +5,7 @@ local scaleFactor = 3
 function Bird:new() 
     local obj = {
         x = 50, -- starting X coordinate 
-        y = 300, -- starting Y coordinate
+        y = 450, -- starting Y coordinate
         width = 40, -- Width of the bird for collision 
         height = 25, -- Height of the bird for collision 
         dy = 0, -- vertical speed 

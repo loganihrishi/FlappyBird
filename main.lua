@@ -93,11 +93,30 @@ function love.keypressed(key)
     elseif gameState == "gameOver" then 
         -- Restart the game when "R" is pressed
         if key == "r" then 
-            love.load() -- restart the game by reloading 
-            gameState = "running" -- reset the gameState 
+            resetGame()
         end 
     end 
 end 
+
+function resetGame()
+    bird = Bird:new()
+    pipePairs = {}  -- Clear the pipe pairs
+    gameState = "running"  -- Set the game state to "running"
+
+    -- Initialize new pipes
+    local initialX = love.graphics.getWidth() + 100 -- Starting X position 
+    local horizontalGap = 350 -- Change the gap as needed 
+
+    for i=1, 3 do
+        local bottomPipeHeight = math.random(200, 230)
+        local bottomPipeY = love.graphics.getHeight() - bottomPipeHeight
+        local gap = math.random(140, 180)
+
+        local bottomPipe = Pipe:new(initialX + (i - 1) * horizontalGap, bottomPipeY, 60, bottomPipeHeight)
+        table.insert(pipePairs, PipePair:new(bottomPipe, gap))
+    end
+end
+
 
 function love.draw()
     -- Draw the background
